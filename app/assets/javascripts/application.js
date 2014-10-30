@@ -49,6 +49,8 @@
 //= require codemirror/addons/edit/matchbrackets
 //= require moment
 //= require cocoon
+//= require annotator
+//= require annotator/annotator.store.min
 //
 //= require_self
 //= require_tree ./templates
