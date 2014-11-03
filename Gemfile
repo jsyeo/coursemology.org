@@ -29,6 +29,10 @@ group :development, :test do
   gem 'launchy'
 end
 
+group :profile do
+  gem 'ruby-prof'
+end
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
