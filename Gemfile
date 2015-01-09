@@ -50,6 +50,7 @@ group :assets do
 
   gem 'coffee-rails'
   gem 'rails-assets-fabric'
+  gem 'rails-assets-annotator'
 end
 
 #gem 'pg'

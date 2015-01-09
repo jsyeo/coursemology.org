@@ -50,6 +50,7 @@
 //= require moment
 //= require cocoon
 //= require fabric
+//= require annotator
 //
 //= require_self
 //= require_tree ./templates
