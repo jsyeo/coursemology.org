@@ -21,26 +21,30 @@
         <% if qn_dic[:ans] %>
             <% if @assessment.specific.file_submission_only? %>
                 <p style="font-style: italic">Answer is contained in the submission file(s).</p>
-            <% elsif qn_dic[:qn].class == Assessment::CodingQuestion %>
-                <%= render partial: "assessment/mission_submissions/" + (@format_for_printing ? "code_for_printing" : "do_coding"),
-                           locals: {answer:       qn_dic[:ans],
-                                    question:     qn_dic[:qn],
-                                    annotations:  qn_dic[:annotations],
-                                    submission:   @submission,
-                                    mode:         "view"} %>
-            <% elsif qn_dic[:qn].class == Assessment::ScribingQuestion %>
-                <%= render partial: 'assessment/mission_submissions/scribing_canvas',
-                           locals: { question: qn_dic[:qn],
-                                     qid: qid,
-                                     answer: qn_dic[:ans],
-                                     edit_mode: false
-                                   } %>
             <% else %>
-                <div class="row-fluid">
-                  <div class="submission-question-block span10">
-                    <%= (qn_dic[:ans].content || "").html_safe %>
-                  </div>
-                </div>
+                <% case qn_dic[:qn] %>
+                <% when Assessment::CodingQuestion %>
+                    <%= render partial: "assessment/mission_submissions/" + (@format_for_printing ? "code_for_printing" : "do_coding"),
+                               locals: { answer:       qn_dic[:ans],
+                                         question:     qn_dic[:qn],
+                                         annotations:  qn_dic[:annotations],
+                                         submission:   @submission,
+                                         mode:         "view" } %>
+                <% when Assessment::ScribingQuestion %>
+                    <%= render partial: 'assessment/mission_submissions/scribing_canvas',
+                               locals: { question: qn_dic[:qn],
+                                         qid: qid,
+                                         answer: qn_dic[:ans],
+                                         edit_mode: false } %>
+                <% when Assessment::GeneralQuestion %>
+                    <div class="row-fluid">
+                        <div class="submission-question-block span10">
+                            <%= (qn_dic[:ans].content || "").html_safe %>
+                        </div>
+                    </div>
+                <% else
+                     raise "Unknown question type: #{qn_dic[:qn]}"
+                   end %>
             <% end %>
             <input type="hidden" name="ags[<%= qn_dic[:grade].id if qn_dic[:grade] %>][answer_id]" value="<%= qn_dic[:ans].id %>">
             <% if @assessment.specific.comment_per_qn? && !@hide_comments%>
