@@ -51,6 +51,7 @@
 //= require cocoon
 //= require fabric
 //= require annotator
+//= require annotator/annotator.store.min
 //
 //= require_self
 //= require_tree ./templates
