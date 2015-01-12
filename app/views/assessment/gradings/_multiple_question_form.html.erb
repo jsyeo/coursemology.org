@@ -22,14 +22,17 @@
             <% if @assessment.specific.file_submission_only? %>
                 <p style="font-style: italic">Answer is contained in the submission file(s).</p>
             <% else %>
+                <% locals = {
+                     answer:       qn_dic[:ans],
+                     question:     qn_dic[:qn],
+                     annotations:  qn_dic[:annotations],
+                     submission:   @submission,
+                     mode:         "view"
+                   } %>
                 <% case qn_dic[:qn] %>
                 <% when Assessment::CodingQuestion %>
                     <%= render partial: "assessment/mission_submissions/" + (@format_for_printing ? "code_for_printing" : "do_coding"),
-                               locals: { answer:       qn_dic[:ans],
-                                         question:     qn_dic[:qn],
-                                         annotations:  qn_dic[:annotations],
-                                         submission:   @submission,
-                                         mode:         "view" } %>
+                               locals: locals %>
                 <% when Assessment::ScribingQuestion %>
                     <%= render partial: 'assessment/mission_submissions/scribing_canvas',
                                locals: { question: qn_dic[:qn],
@@ -37,11 +40,8 @@
                                          answer: qn_dic[:ans],
                                          edit_mode: false } %>
                 <% when Assessment::GeneralQuestion %>
-                    <div class="row-fluid">
-                        <div class="submission-question-block span10">
-                            <%= (qn_dic[:ans].content || "").html_safe %>
-                        </div>
-                    </div>
+                    <%= render partial: 'assessment/mission_submissions/general_answer',
+                               locals: locals %>
                 <% else
                      raise "Unknown question type: #{qn_dic[:qn]}"
                    end %>
