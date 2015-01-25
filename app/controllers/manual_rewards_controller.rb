@@ -14,6 +14,9 @@ class ManualRewardsController < ApplicationController
       end
     end
 
+    # sort students by name, capitalize to make sorting indiferent to case of names
+    @student_courses.sort_by! { |student| student.name.capitalize }
+
     exps = params[:exps]
     if exps
       count = 0
